@@ -8,3 +8,7 @@ OBJ = ipv4-actions_ubpf.o runtime/ebpf_map.o runtime/ebpf_registry.o test.o
 
 test : $(OBJ)
 	$(CC) -o test $(OBJ)
+
+clean :
+	rm -f runtime/*.o ./*.o runtime/*~ ./*~
+

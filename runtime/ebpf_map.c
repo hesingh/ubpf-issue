@@ -27,7 +27,6 @@ enum bpf_flags {
     USER_BPF_NOEXIST,  // create new element only if it didn't exist
     USER_BPF_EXIST  // only update existing element
 };
-#if 0
 static int check_flags(void *elem, unsigned long long map_flags) {
     if (map_flags > USER_BPF_EXIST)
         /* unknown flags */
@@ -40,7 +39,6 @@ static int check_flags(void *elem, unsigned long long map_flags) {
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
-#endif
 void *bpf_map_lookup_elem(struct bpf_map *map, void *key, unsigned int key_size) {
     struct bpf_map *tmp_map = NULL;
     HASH_FIND(hh, map, key, key_size, tmp_map);
@@ -51,16 +49,10 @@ void *bpf_map_lookup_elem(struct bpf_map *map, void *key, unsigned int key_size)
 
 int bpf_map_update_elem(struct bpf_map **map, void *key, unsigned int key_size, void *value, unsigned int value_size, unsigned long long flags) {
     struct bpf_map *tmp_map = NULL;
-#if 0
-    fprintf(stderr, "UPF >> bpf_map_update_elem\n");
     HASH_FIND(hh, *map, key, key_size, tmp_map);
-    fprintf(stderr, "UPF 0 bpf_map_update_elem\n");
     int ret = check_flags(tmp_map, flags);
-    fprintf(stderr, "UPF 1 bpf_map_update_elem\n");
     if (ret)
         return ret;
-#endif
-#if 1
     if (tmp_map == NULL) {
         tmp_map = (struct bpf_map *) malloc(sizeof(struct bpf_map));
         tmp_map->key = malloc(key_size);
@@ -69,7 +61,6 @@ int bpf_map_update_elem(struct bpf_map **map, void *key, unsigned int key_size, 
     }
     tmp_map->value = malloc(value_size);
     memcpy(tmp_map->value, value, value_size);
-#endif    
     return EXIT_SUCCESS;
 }
 
