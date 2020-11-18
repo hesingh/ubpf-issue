@@ -159,6 +159,9 @@ do {                                                                            
   if (head) {                                                                    \
     unsigned _hf_bkt;                                                            \
     HASH_TO_BKT(hashval, (head)->hh.tbl->num_buckets, _hf_bkt);                  \
+    if (HASH_BLOOM_TEST((head)->hh.tbl, hashval) != 0) {                         \
+      HASH_FIND_IN_BKT((head)->hh.tbl, hh, (head)->hh.tbl->buckets[ _hf_bkt ], keyptr, keylen, hashval, out); \
+    }                                                                            \
   }                                                                              \
 } while (0)
 

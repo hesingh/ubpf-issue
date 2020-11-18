@@ -73,14 +73,10 @@ int registry_add(struct bpf_table *tbl) {
     tmp_reg->handle = table_indexer;
     tmp_reg->tbl = tbl;
     /* Add the id and name to the registry. */
-    HASH_ADD(h_name, reg_tables_name, tbl->name, strlen(tbl->name), tmp_reg);
+    HASH_ADD(h_name, reg_tables_name, name, strlen(tbl->name), tmp_reg);
     HASH_ADD(h_id, reg_tables_id, handle, sizeof(int), tmp_reg);
     table_indexer++;
     fprintf(stderr, "Table add success %s\n", tbl->name);
-    struct bpf_table *tmp_tbl = registry_lookup_table(tbl->name);
-    if (tmp_tbl == NULL) {
-        fprintf(stderr, "Error: registry_add chk failed: %s\n", tbl->name);
-    }
     return EXIT_SUCCESS;
 }
 
