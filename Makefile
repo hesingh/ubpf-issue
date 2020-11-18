@@ -10,5 +10,5 @@ test : $(OBJ)
 	$(CC) -o test $(OBJ)
 
 clean :
-	rm -f runtime/*.o ./*.o runtime/*~ ./*~
+	rm -f test runtime/*.o ./*.o runtime/*~ ./*~
 

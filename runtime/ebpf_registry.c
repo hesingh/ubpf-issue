@@ -45,7 +45,7 @@ static registry_entry *find_register(const char *name) {
         fprintf(stderr, "Error: Key name %s exceeds maximum size %d", name, MAX_TABLE_NAME_LENGTH);
         return NULL;
     }
-    registry_entry *tmp_reg = NULL;
+    registry_entry *tmp_reg;
     HASH_FIND(h_name, reg_tables_name, name, strlen(name), tmp_reg);
     return tmp_reg;
 }
@@ -115,7 +115,7 @@ struct bpf_table *registry_lookup_table(const char *name) {
 }
 
 struct bpf_table *registry_lookup_table_id(int tbl_id) {
-    registry_entry *tmp_reg = NULL;
+    registry_entry *tmp_reg;
     HASH_FIND(h_id, reg_tables_id, &tbl_id, sizeof(int), tmp_reg);
     if (tmp_reg == NULL)
         return NULL;
@@ -129,6 +129,8 @@ int registry_update_table(const char *name, void *key, void *value, unsigned lon
         /* not found, return */
         return EXIT_FAILURE;
     }
+    printf("check tbl: %s key sz = %d val sz = %d \n",
+	    name, tmp_tbl->key_size, tmp_tbl->value_size);
     return bpf_map_update_elem(&tmp_tbl->bpf_map, key, tmp_tbl->key_size, value, tmp_tbl->value_size, flags);
 }
 

@@ -50,7 +50,7 @@ static void inline init_ubpf_table_test(char *name, unsigned int key_size, unsig
 #define ubpf_map_lookup(table, key) \
     registry_lookup_table_elem(#table, key)
 #define ubpf_map_update(table, key, value) \
-    registry_update_table(#table, key, value, 0);
+    registry_update_table(#table, key, value, 0)
 
 #define INIT_UBPF_TABLE(name, key_size, value_size) init_ubpf_table_test("&"name, key_size, value_size)
 

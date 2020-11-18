@@ -27,6 +27,7 @@ enum bpf_flags {
     USER_BPF_NOEXIST,  // create new element only if it didn't exist
     USER_BPF_EXIST  // only update existing element
 };
+
 static int check_flags(void *elem, unsigned long long map_flags) {
     if (map_flags > USER_BPF_EXIST)
         /* unknown flags */
@@ -39,8 +40,9 @@ static int check_flags(void *elem, unsigned long long map_flags) {
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
+
 void *bpf_map_lookup_elem(struct bpf_map *map, void *key, unsigned int key_size) {
-    struct bpf_map *tmp_map = NULL;
+    struct bpf_map *tmp_map;
     HASH_FIND(hh, map, key, key_size, tmp_map);
     if (tmp_map == NULL)
         return NULL;
@@ -48,7 +50,7 @@ void *bpf_map_lookup_elem(struct bpf_map *map, void *key, unsigned int key_size)
 }
 
 int bpf_map_update_elem(struct bpf_map **map, void *key, unsigned int key_size, void *value, unsigned int value_size, unsigned long long flags) {
-    struct bpf_map *tmp_map = NULL;
+    struct bpf_map *tmp_map;
     HASH_FIND(hh, *map, key, key_size, tmp_map);
     int ret = check_flags(tmp_map, flags);
     if (ret)
@@ -57,7 +59,7 @@ int bpf_map_update_elem(struct bpf_map **map, void *key, unsigned int key_size, 
         tmp_map = (struct bpf_map *) malloc(sizeof(struct bpf_map));
         tmp_map->key = malloc(key_size);
         memcpy(tmp_map->key, key, key_size);
-	//        HASH_ADD_KEYPTR(hh, *map, tmp_map->key, key_size, tmp_map);
+        HASH_ADD_KEYPTR(hh, *map, tmp_map->key, key_size, tmp_map);
     }
     tmp_map->value = malloc(value_size);
     memcpy(tmp_map->value, value, value_size);
@@ -65,7 +67,7 @@ int bpf_map_update_elem(struct bpf_map **map, void *key, unsigned int key_size, 
 }
 
 int bpf_map_delete_elem(struct bpf_map *map, void *key, unsigned int key_size) {
-    struct bpf_map *tmp_map = NULL;
+    struct bpf_map *tmp_map;
     HASH_FIND(hh, map, key, key_size, tmp_map);
     if (tmp_map != NULL) {
         HASH_DEL(map, tmp_map);

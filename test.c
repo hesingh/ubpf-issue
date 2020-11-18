@@ -10,8 +10,11 @@ int main()
             .action = pipe_filter_tbl_NoAction,
             .u = {.pipe_filter_tbl_NoAction = {}},
         };
-        INIT_UBPF_TABLE("pipe_filter_tbl_defaultAction", sizeof(ebpf_zero), sizeof(pipe_filter_tbl_NoAction_value));
-	ubpf_map_update(&pipe_filter_tbl_defaultAction, &ebpf_zero, &pipe_filter_tbl_NoAction_value);
+        printf("size = %ld\n", sizeof(pipe_filter_tbl_NoAction_value));
+        INIT_UBPF_TABLE("pipe_filter_tbl_defaultAction", sizeof(ebpf_zero),
+			sizeof(pipe_filter_tbl_NoAction_value));
+        ubpf_map_update(&pipe_filter_tbl_defaultAction, &ebpf_zero,
+			&pipe_filter_tbl_NoAction_value);
     }
 }
 
