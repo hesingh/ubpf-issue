@@ -33,9 +33,6 @@ static void inline init_ubpf_table_test(char *name, unsigned int key_size, unsig
         .bpf_map = NULL
     };
     registry_add(&tbl);
-    struct bpf_table *tmp_tbl = registry_lookup_table(name);
-    if (tmp_tbl == NULL)
-      printf("Failed tbl add %s\n", name);
 }
 
 

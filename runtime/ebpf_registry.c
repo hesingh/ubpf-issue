@@ -76,7 +76,6 @@ int registry_add(struct bpf_table *tbl) {
     HASH_ADD(h_name, reg_tables_name, name, strlen(tbl->name), tmp_reg);
     HASH_ADD(h_id, reg_tables_id, handle, sizeof(int), tmp_reg);
     table_indexer++;
-    fprintf(stderr, "Table add success %s\n", tbl->name);
     return EXIT_SUCCESS;
 }
 
@@ -129,7 +128,7 @@ int registry_update_table(const char *name, void *key, void *value, unsigned lon
         /* not found, return */
         return EXIT_FAILURE;
     }
-    printf("check tbl: %s key sz = %d val sz = %d \n",
+    printf("check tbl: %s key sz = %u val sz = %u \n",
 	    name, tmp_tbl->key_size, tmp_tbl->value_size);
     return bpf_map_update_elem(&tmp_tbl->bpf_map, key, tmp_tbl->key_size, value, tmp_tbl->value_size, flags);
 }
